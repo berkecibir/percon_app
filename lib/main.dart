@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percon_app/core/init/app_init.dart';
+import 'package:percon_app/core/routes/app_routes.dart';
+import 'package:percon_app/core/utils/const/app_texts.dart';
 import 'package:percon_app/core/widgets/navigation/navigation_helper.dart';
+import 'package:percon_app/feat/presentation/pages/auth/page/login_page.dart';
+import 'package:percon_app/feat/providers/bloc_providers_set_up.dart';
 
-void main() {
+void main() async {
+  // Application Initialize
+  await AppInit.initialize();
   runApp(const MainApp());
 }
 
@@ -13,11 +20,15 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Initialize device size
     AppInit.initDeviceSize(context);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Percon Travel App',
-      navigatorKey: Navigation.navigationKey,
-      home: Scaffold(body: Center(child: Text('Hello World!'))),
+    return MultiBlocProvider(
+      providers: BlocProvidersSetUp.providers,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: AppTexts.appName,
+        navigatorKey: Navigation.navigationKey,
+        routes: AppRoutes.routes,
+        initialRoute: LoginPage.id,
+      ),
     );
   }
 }
