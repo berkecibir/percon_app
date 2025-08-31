@@ -43,3 +43,22 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Firebase Configuration Files (Security Critical)
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+lib/firebase_options.dart
+firebase.json
+
+# Environment Variables
+.env
+.env.local
+.env.development
+.env.production
+.env.staging
+
+# Firebase CLI
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+.firebaserc
