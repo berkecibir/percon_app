@@ -31,4 +31,4 @@ flutter:
     - assets/images/
     - assets/icon/
     - assets/json/
-    - assets/.env/
+    - assets/.env

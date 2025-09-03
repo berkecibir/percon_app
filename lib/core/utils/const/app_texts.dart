@@ -37,4 +37,27 @@ class AppTexts {
   // Login Page Texts
   static const String welcomeText = 'Willkommen';
   static const String logginInText = 'Anmelden...';
+
+  // Home Page Texts
+
+  static const String categoryDe = 'Kategorie'; // Dropdown menu item
+  static const String cultureDe = 'Kultur'; // Dropdown menu item
+  static const String festivalDe = 'Festival'; // Dropdown menu item
+  static const String adventureDe = 'Abenteuer'; // Dropdown menu item
+
+  static const String countryDe = 'Land'; // Country dropdown
+  static const String regionDe = 'Gebiet'; // Region dropdwon
+
+  static const String startDateDe = 'Startdatum'; // Datepicer start date
+  static const String endDateDe = 'Enddatum'; // Datepicker end date
+
+  static const String searchDe = 'Suchen...'; // Search field
+
+  // Appbar title
+  static const String homeAppbarTitle = 'Reise';
+
+  static const String noTravelsFoundDe = 'Keine Reisen gefunden';
+
+  // Seach Field Hint Text
+  static const String hintTextSearch = 'Suchen';
 }
