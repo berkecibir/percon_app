@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percon_app/core/utils/const/app_texts.dart';
 import 'package:percon_app/core/utils/enum/view_mode_enum.dart';
+import 'package:percon_app/core/widgets/navigation/navigation_helper.dart';
 import 'package:percon_app/feat/presentation/cubit/home/travel_cubit.dart';
 import 'package:percon_app/feat/presentation/cubit/home/travel_state.dart';
 
@@ -16,7 +17,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return CustomAppBar(
       title: AppTexts.homeAppbarTitle,
       actions: [
-        IconButton(icon: const Icon(Icons.favorite), onPressed: () {}),
+        IconButton(
+          icon: const Icon(Icons.favorite),
+          onPressed: () {
+            Navigation.pushNamed(root: AppTexts.favoritePageId);
+          },
+        ),
         BlocBuilder<TravelCubit, TravelState>(
           builder: (context, state) {
             final travelCubit = context.read<TravelCubit>();
@@ -32,6 +38,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ],
     );
+  }
+
+  factory CustomAppBar.favorite() {
+    return CustomAppBar(title: AppTexts.favoriteAppBarTitle);
   }
 
   @override

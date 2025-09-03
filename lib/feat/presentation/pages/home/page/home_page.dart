@@ -6,14 +6,20 @@ import 'package:percon_app/core/utils/enum/view_mode_enum.dart';
 import 'package:percon_app/core/widgets/device_spacing/device_spacing.dart';
 import 'package:percon_app/feat/presentation/cubit/home/travel_cubit.dart';
 import 'package:percon_app/feat/presentation/cubit/home/travel_state.dart';
+import 'package:percon_app/feat/presentation/pages/home/mixin/home_page_mixin.dart';
 import 'package:percon_app/feat/presentation/product/widgets/custom_app_bar.dart';
 import 'package:percon_app/feat/presentation/product/widgets/home/filter_section.dart';
 import 'package:percon_app/feat/presentation/product/widgets/home/travel_card.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   static const String id = AppTexts.homePageId;
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> with HomePageMixin {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<TravelCubit, TravelState>(

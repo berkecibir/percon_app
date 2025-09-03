@@ -26,18 +26,51 @@ class TravelCubit extends Cubit<TravelState> {
   TravelCubit({ITravelRepository? travelRepository})
     : _travelRepository = travelRepository ?? TravelRepository(),
       super(TravelInitial()) {
-    _loadInitialTravels();
+    loadInitialTravels();
   }
-
-  void _loadInitialTravels() async {
+  void loadInitialTravels() async {
     emit(TravelLoading());
     try {
       _allTravels = await _travelRepository.getAllTravels(limit: _pageSize);
       _filteredTravels = List.from(_allTravels);
       _currentPage = 1;
-      emit(TravelLoaded(_filteredTravels));
+      emit(TravelLoaded(_filteredTravels, viewMode: _viewMode));
     } catch (e) {
       emit(TravelError('Failed to load travels: $e'));
+    }
+  }
+
+  void loadMoreTravels() async {
+    if (_isLoadingMore || !_hasMoreData) return;
+
+    _isLoadingMore = true;
+    // Emit the current state with a loading indicator flag
+    if (state is TravelLoaded) {
+      emit(
+        (state as TravelLoaded).copyWith(travels: List.from(_filteredTravels)),
+      );
+    } else {
+      emit(TravelLoaded(List.from(_filteredTravels), viewMode: _viewMode));
+    }
+
+    try {
+      final moreTravels = await _travelRepository.getAllTravels(
+        offset: _currentPage * _pageSize,
+        limit: _pageSize,
+      );
+
+      if (moreTravels.isEmpty) {
+        _hasMoreData = false;
+      } else {
+        _allTravels.addAll(moreTravels);
+        _applyCurrentFilters(); // Re-apply filters to include new data
+        _currentPage++;
+      }
+
+      _isLoadingMore = false;
+    } catch (e) {
+      _isLoadingMore = false;
+      // Handle error silently or emit an error state for loading more
     }
   }
 
@@ -61,7 +94,17 @@ class TravelCubit extends Cubit<TravelState> {
         if (filteredIndex != -1) {
           _filteredTravels[filteredIndex] = updatedTravel;
         }
-        emit(TravelLoaded(List.from(_filteredTravels)));
+
+        // Emit updated state with current viewMode
+        if (state is TravelLoaded) {
+          emit(
+            (state as TravelLoaded).copyWith(
+              travels: List.from(_filteredTravels),
+            ),
+          );
+        } else {
+          emit(TravelLoaded(List.from(_filteredTravels), viewMode: _viewMode));
+        }
       }
     } catch (e) {
       emit(TravelError('Failed to toggle favorite: $e'));
@@ -245,9 +288,12 @@ class TravelCubit extends Cubit<TravelState> {
   // Add view mode toggle method
   void toggleViewMode() {
     _viewMode = _viewMode == ViewMode.list ? ViewMode.grid : ViewMode.list;
-    emit(
-      TravelLoaded(List.from(_filteredTravels)),
-    ); // Re-emit state to trigger UI update
+    // Emit updated state with new viewMode
+    if (state is TravelLoaded) {
+      emit((state as TravelLoaded).copyWith(viewMode: _viewMode));
+    } else {
+      emit(TravelLoaded(List.from(_filteredTravels), viewMode: _viewMode));
+    }
   }
 
   bool get hasMoreData => _hasMoreData;

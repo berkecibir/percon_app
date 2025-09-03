@@ -19,35 +19,53 @@ class GoogleSignInService implements IGoogleSignInService {
   }) : _auth = authInstance ?? auth.FirebaseAuth.instance,
        _googleSignIn = googleSignInInstance ?? GoogleSignIn(),
        _firestore = firestoreInstance ?? FirebaseFirestore.instance;
+  // ... existing code ...
   @override
   Future<UserModel?> signInWithGoogle() async {
     try {
+      debugPrint('Starting Google Sign In process');
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
       if (googleUser == null) {
+        debugPrint('Google Sign In was cancelled by user');
         return null;
       }
 
+      debugPrint('Google user signed in: ${googleUser.email}');
+
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
+
+      debugPrint('Google auth successful, getting credential');
+
       final auth.OAuthCredential credential =
           auth.GoogleAuthProvider.credential(
             accessToken: googleAuth.accessToken,
             idToken: googleAuth.idToken,
           );
 
+      debugPrint('Signing in with Firebase credential');
       final auth.UserCredential userCredential = await _auth
           .signInWithCredential(credential);
+
       final auth.User? user = userCredential.user;
+
       if (user == null) {
+        debugPrint('Firebase user is null');
         return null;
       }
+
+      debugPrint('Firebase user signed in: ${user.uid}');
 
       final DocumentReference userDocRef = _firestore
           .collection(AppTexts.usersCollection)
           .doc(user.uid);
+
+      debugPrint('Checking if user document exists');
       final DocumentSnapshot snapshot = await userDocRef.get();
 
       if (!snapshot.exists) {
+        debugPrint('Creating new user document');
         // New User - First time auth
         final newUser = UserModel(
           uid: user.uid,
@@ -66,6 +84,7 @@ class GoogleSignInService implements IGoogleSignInService {
 
         return newUser;
       } else {
+        debugPrint('Updating existing user document');
         // if user signed in before - update lastLogin
         await userDocRef.update({
           AppTexts.lastLogin: FieldValue.serverTimestamp(),
@@ -79,13 +98,20 @@ class GoogleSignInService implements IGoogleSignInService {
       }
     } on FirebaseException catch (e) {
       debugPrint('${AppTexts.firebaseExceptionMsg} $e');
+      debugPrint('FirebaseException code: ${e.code}');
+      debugPrint('FirebaseException message: ${e.message}');
       return null;
     } on CustomException catch (e) {
       // General exception handling
-      debugPrint('Google Sign In Error: ${e.toString()}');
+      debugPrint('CustomException: ${e.toString()}');
+      return null;
+    } catch (e) {
+      debugPrint('Unexpected error during Google Sign In: $e');
+      debugPrint('Error type: ${e.runtimeType}');
       return null;
     }
   }
+  // ... existing code ...
 
   @override
   Future<void> signOut() async {

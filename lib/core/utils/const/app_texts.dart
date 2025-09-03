@@ -6,7 +6,7 @@ class AppTexts {
   /// App Page Ids
   static const String loginPageId = 'login_page';
   static const String homePageId = 'home_page';
-
+  static const String favoritePageId = 'favorite_page';
   // Json Path Here
   static const String jsonPath = 'assets/json/travels.json';
 
@@ -32,7 +32,7 @@ class AppTexts {
   static const String firebaseExceptionMsg = 'Firebase Exception: ';
 
   // Button Texts
-  static const String googleSignInButton = 'Continue with Google';
+  static const String googleSignInButton = 'Weiter mit Google';
 
   // Login Page Texts
   static const String welcomeText = 'Willkommen';
@@ -53,8 +53,14 @@ class AppTexts {
 
   static const String searchDe = 'Suchen...'; // Search field
 
+  // Favorite Page Text
+  static const String noFavoritesYetDe = 'Noch keine Favoriten';
+  static const String errorLoadingMsgDe =
+      'Beim Laden der Favoriten ist ein Fehler aufgetreten';
+
   // Appbar title
   static const String homeAppbarTitle = 'Reise';
+  static const String favoriteAppBarTitle = 'Favoriten';
 
   static const String noTravelsFoundDe = 'Keine Reisen gefunden';
 
