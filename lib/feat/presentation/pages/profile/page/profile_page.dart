@@ -5,7 +5,7 @@ import 'package:percon_app/feat/data/repository/auth/i_user_repositiory.dart';
 import 'package:percon_app/feat/presentation/cubit/auth/auth_cubit.dart';
 import 'package:percon_app/feat/presentation/cubit/auth/auth_state.dart';
 import 'package:percon_app/feat/presentation/cubit/profile/profile_cubit.dart';
-import 'package:percon_app/feat/presentation/pages/profile/profile_view.dart';
+import 'package:percon_app/feat/presentation/pages/profile/page/profile_view.dart';
 
 class ProfilePage extends StatelessWidget {
   static const String id = AppTexts.profilePageId;

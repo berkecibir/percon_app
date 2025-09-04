@@ -8,6 +8,8 @@ class AppTexts {
   static const String homePageId = 'home_page';
   static const String favoritePageId = 'favorite_page';
   static const String profilePageId = 'profile_page';
+  static const String splashPageId = 'splash_page';
+
   // Json Path Here
   static const String jsonPath = 'assets/json/travels.json';
 

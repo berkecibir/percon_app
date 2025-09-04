@@ -16,16 +16,38 @@ class FilterSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: DevicePadding.small.all,
-      child: Column(
-        children: [
-          SearchField(travelCubit: travelCubit),
-          DeviceSpacing.small.height,
-          CountryRegionDropdowns(travelCubit: travelCubit),
-          DeviceSpacing.small.height,
-          CategoryAndClearFilters(travelCubit: travelCubit),
-          DeviceSpacing.small.height,
-          DatePickers(travelCubit: travelCubit),
-        ],
+      child: OrientationBuilder(
+        builder: (context, orientation) {
+          if (orientation == Orientation.landscape) {
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Column(
+                children: [
+                  SearchField(travelCubit: travelCubit),
+                  DeviceSpacing.small.height,
+                  CountryRegionDropdowns(travelCubit: travelCubit),
+                  DeviceSpacing.small.height,
+                  CategoryAndClearFilters(travelCubit: travelCubit),
+                  DeviceSpacing.small.height,
+                  DatePickers(travelCubit: travelCubit),
+                ],
+              ),
+            );
+          } else {
+            // Portrait mod
+            return Column(
+              children: [
+                SearchField(travelCubit: travelCubit),
+                DeviceSpacing.small.height,
+                CountryRegionDropdowns(travelCubit: travelCubit),
+                DeviceSpacing.small.height,
+                CategoryAndClearFilters(travelCubit: travelCubit),
+                DeviceSpacing.small.height,
+                DatePickers(travelCubit: travelCubit),
+              ],
+            );
+          }
+        },
       ),
     );
   }

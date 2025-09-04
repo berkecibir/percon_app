@@ -9,6 +9,7 @@ import 'package:percon_app/feat/presentation/cubit/auth/auth_cubit.dart';
 import 'package:percon_app/feat/presentation/cubit/auth/auth_state.dart';
 import 'package:percon_app/feat/presentation/pages/auth/page/login_page.dart';
 import 'package:percon_app/feat/presentation/pages/home/page/home_page.dart';
+import 'package:percon_app/feat/presentation/pages/splash/page/splash_page.dart';
 import 'package:percon_app/feat/providers/bloc_providers_set_up.dart';
 
 Future<void> main() async {
@@ -32,7 +33,7 @@ class MainApp extends StatelessWidget {
         title: AppTexts.appName,
         navigatorKey: Navigation.navigationKey,
         routes: AppRoutes.routes,
-        initialRoute: LoginPage.id,
+        initialRoute: SplashPage.id,
         builder: (context, child) {
           return BlocListener<AuthCubit, AuthState>(
             listener: (context, state) {
