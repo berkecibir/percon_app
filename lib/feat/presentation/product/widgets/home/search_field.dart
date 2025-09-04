@@ -40,7 +40,6 @@ class _SearchFieldState extends State<SearchField> {
         _updateControllerText();
         return TextField(
           controller: _controller,
-
           decoration: InputDecoration(
             hintText: AppTexts.searchDe,
             prefixIcon: const Icon(Icons.search),

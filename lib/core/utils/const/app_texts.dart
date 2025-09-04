@@ -7,6 +7,7 @@ class AppTexts {
   static const String loginPageId = 'login_page';
   static const String homePageId = 'home_page';
   static const String favoritePageId = 'favorite_page';
+  static const String profilePageId = 'profile_page';
   // Json Path Here
   static const String jsonPath = 'assets/json/travels.json';
 
@@ -58,9 +59,20 @@ class AppTexts {
   static const String errorLoadingMsgDe =
       'Beim Laden der Favoriten ist ein Fehler aufgetreten';
 
+  // Profile Page Texts
+  static const String userNotFoundDe = 'Benutzer nicht gefunden';
+  static const String tryAgainDe = 'Versuchen Sie es erneut';
+  static const String errorDe = 'Fehler';
+  static const String nameSurnameDe = 'Name Nachname';
+  static const String emailDe = 'E-Mail';
+  static const String memberShipDe = 'Mitgliedschaftsdatum';
+  static const String lastLoginDe = 'Letzter Eintrag';
+  static const String logOutDe = 'Abmelden';
+  static const String unknowdDe = 'Unbekannt';
   // Appbar title
   static const String homeAppbarTitle = 'Reise';
   static const String favoriteAppBarTitle = 'Favoriten';
+  static const String profilePageAppBarTitle = 'Profil';
 
   static const String noTravelsFoundDe = 'Keine Reisen gefunden';
 

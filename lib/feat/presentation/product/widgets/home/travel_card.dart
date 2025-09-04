@@ -65,7 +65,7 @@ class _TravelCardState extends State<TravelCard> {
                     '${widget.travel.country}, ${widget.travel.region}',
                     style: Theme.of(
                       context,
-                    ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
+                    ).textTheme.bodyLarge?.copyWith(color: Colors.grey),
                   ),
                   DeviceSpacing.xsmall.height,
                   Text(
@@ -77,17 +77,15 @@ class _TravelCardState extends State<TravelCard> {
                   DeviceSpacing.xsmall.height,
                   Text(
                     widget.travel.category,
-                    style: Theme.of(context).textTheme.titleSmall,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  // Description will be shown when expanded
                   if (_isExpanded) ...[
                     DeviceSpacing.xsmall.height,
                     Text(
                       widget.travel.description,
                       style: Theme.of(context).textTheme.bodyMedium,
-                      maxLines: 3, // Maksimum 3 satır göster
-                      overflow:
-                          TextOverflow.ellipsis, // Taşan metni ... ile göster
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ],

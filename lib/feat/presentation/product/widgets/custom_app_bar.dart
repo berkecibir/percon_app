@@ -23,6 +23,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             Navigation.pushNamed(root: AppTexts.favoritePageId);
           },
         ),
+        IconButton(
+          icon: const Icon(Icons.person),
+          onPressed: () {
+            Navigation.pushNamed(root: AppTexts.profilePageId);
+          },
+        ),
         BlocBuilder<TravelCubit, TravelState>(
           builder: (context, state) {
             final travelCubit = context.read<TravelCubit>();
@@ -38,6 +44,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ],
     );
+  }
+
+  factory CustomAppBar.profile() {
+    return CustomAppBar(title: AppTexts.profilePageAppBarTitle);
   }
 
   factory CustomAppBar.favorite() {

@@ -1,0 +1,77 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:percon_app/core/utils/const/app_texts.dart';
+import 'package:percon_app/core/widgets/device_padding/device_padding.dart';
+import 'package:percon_app/core/widgets/device_spacing/device_spacing.dart';
+import 'package:percon_app/feat/data/model/auth/user_model.dart';
+import 'package:percon_app/feat/presentation/cubit/auth/auth_cubit.dart';
+import 'package:percon_app/feat/presentation/product/widgets/custom_button.dart';
+import 'package:percon_app/feat/presentation/product/widgets/profile/profile_header.dart';
+import 'package:percon_app/feat/presentation/product/widgets/profile/user_info_card.dart';
+
+class ProfileContent extends StatelessWidget {
+  final UserModel user;
+
+  const ProfileContent({super.key, required this.user});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: DevicePadding.medium.all,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Profile Header
+          ProfileHeader(user: user),
+          DeviceSpacing.medium.height,
+
+          // User Info Cards
+          UserInfoCard(
+            title: AppTexts.nameSurnameDe,
+            content: user.fullName,
+            icon: Icons.person,
+          ),
+          DeviceSpacing.small.height,
+
+          UserInfoCard(
+            title: AppTexts.emailDe,
+            content: user.email,
+            icon: Icons.email,
+          ),
+          DeviceSpacing.small.height,
+
+          UserInfoCard(
+            title: AppTexts.memberShipDe,
+            content: _formatDate(user.createdAt),
+            icon: Icons.calendar_today,
+          ),
+          DeviceSpacing.small.height,
+
+          UserInfoCard(
+            title: AppTexts.lastLoginDe,
+            content: _formatDate(user.lastLogin),
+            icon: Icons.access_time,
+          ),
+          DeviceSpacing.small.height,
+
+          Center(
+            child: CustomButton(
+              onTap: () {
+                context.read<AuthCubit>().signOut();
+              },
+              child: Text(
+                AppTexts.logOutDe,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _formatDate(DateTime? date) {
+    if (date == null) return AppTexts.unknowdDe;
+    return '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+  }
+}
