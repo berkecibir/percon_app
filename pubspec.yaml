@@ -21,10 +21,16 @@ dependencies:
   flutter_dotenv: ^6.0.0 # Environment
   shared_preferences: ^2.5.3 # Shared preferences for user preferences
   flutter_svg: ^2.2.1 # SVG support
+  flutter_launcher_icons: ^0.14.4 # Icon generator
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/images/wanderlust_app_icon.png"
 
 flutter:
   uses-material-design: true
