@@ -7,7 +7,7 @@ import 'package:percon_app/feat/data/service/auth/google_sign_in_service.dart';
 import 'package:percon_app/feat/data/service/auth/i_google_sign_in_service.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 
-class UserRepository implements UserRepositiory {
+class UserRepository implements IUserRepositiory {
   final IGoogleSignInService _googleSignInService;
   final FirebaseFirestore _firestore;
 

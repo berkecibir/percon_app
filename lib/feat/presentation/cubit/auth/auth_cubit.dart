@@ -7,11 +7,11 @@ import 'package:percon_app/feat/data/repository/auth/i_user_repositiory.dart';
 import 'package:percon_app/feat/presentation/cubit/auth/auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final UserRepositiory _userRepository;
+  final IUserRepositiory _userRepository;
   final auth.FirebaseAuth _firebaseAuth;
 
   AuthCubit({
-    required UserRepositiory userRepository,
+    required IUserRepositiory userRepository,
     auth.FirebaseAuth? firebaseAuth,
   }) : _userRepository = userRepository,
        _firebaseAuth = firebaseAuth ?? auth.FirebaseAuth.instance,
@@ -44,24 +44,25 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthAuthenticated(user: user));
       } else {
         debugPrint('Google sign in was cancelled or failed');
-        emit(const AuthError(message: 'Google girişi iptal edildi'));
+        emit(const AuthError(message: 'Google-Anmeldung wurde abgebrochen'));
       }
     } on auth.FirebaseAuthException catch (e) {
-      String errorMessage = 'Giriş yaparken bir hata oluştu';
+      String errorMessage = 'Fehler beim Anmelden';
       if (e.code == 'account-exists-with-different-credential') {
-        errorMessage = 'Bu e-posta ile başka bir hesap zaten var';
+        errorMessage = 'Ein Konto mit dieser E-Mail-Adresse existiert bereits';
       } else if (e.code == 'invalid-credential') {
-        errorMessage = 'Geçersiz kimlik bilgisi';
+        errorMessage = 'Ungültige Anmeldedaten';
       } else if (e.code == 'operation-not-allowed') {
-        errorMessage = 'Google ile giriş izni verilmemiş';
+        errorMessage = 'Google-Anmeldung ist nicht aktiviert';
       } else if (e.code == 'user-disabled') {
-        errorMessage = 'Kullanıcı hesabı devre dışı bırakılmış';
+        errorMessage = 'Benutzerkonto wurde deaktiviert';
       } else if (e.code == 'user-not-found') {
-        errorMessage = 'Kullanıcı bulunamadı';
+        errorMessage = 'Benutzer nicht gefunden';
       } else if (e.code == 'wrong-password') {
-        errorMessage = 'Yanlış şifre';
+        errorMessage = 'Falsches Passwort';
       } else if (e.code == 'too-many-requests') {
-        errorMessage = 'Çok fazla istek gönderildi, daha sonra tekrar deneyin';
+        errorMessage =
+            'Zu viele Anfragen. Bitte versuchen Sie es später erneut';
       }
       debugPrint('FirebaseAuthException: ${e.code} - ${e.message}');
       emit(AuthError(message: errorMessage));
@@ -70,17 +71,18 @@ class AuthCubit extends Cubit<AuthState> {
       debugPrint('Exception type: ${e.runtimeType}');
 
       // Handle other exceptions including PlatformException
-      String errorMessage = 'Giriş yaparken bir hata oluştu: ${e.toString()}';
+      String errorMessage = 'Fehler beim Anmelden: ${e.toString()}';
       // Check if it's a PlatformException and handle specific cases
       if (e is PlatformException) {
         if (e.code == 'sign_in_failed') {
           if (e.message?.contains('DEVELOPER_ERROR') == true) {
             errorMessage =
-                'Geliştirici hatası: SHA sertifikası veya Google Services dosyası eksik olabilir';
+                'Konfigurationsfehler: SHA-Zertifikat oder Google Services-Datei fehlt möglicherweise';
           } else if (e.message?.contains('INVALID_ACCOUNT') == true) {
-            errorMessage = 'Geçersiz hesap';
+            errorMessage = 'Ungültiges Konto';
           } else {
-            errorMessage = 'Google ile giriş yapılamadı: ${e.message ?? ''}';
+            errorMessage =
+                'Google-Anmeldung fehlgeschlagen: ${e.message ?? ''}';
           }
         }
       }
@@ -109,7 +111,7 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(
         AuthError(
-          message: 'Kullanıcı verileri alınırken hata oluştu: ${e.toString()}',
+          message: 'Fehler beim Laden der Benutzerdaten: ${e.toString()}',
         ),
       );
     }
@@ -122,9 +124,7 @@ class AuthCubit extends Cubit<AuthState> {
       await _userRepository.signOut();
       emit(AuthUnauthenticated());
     } catch (e) {
-      emit(
-        AuthError(message: 'Çıkış yaparken bir hata oluştu: ${e.toString()}'),
-      );
+      emit(AuthError(message: 'Fehler beim Abmelden: ${e.toString()}'));
     }
   }
 

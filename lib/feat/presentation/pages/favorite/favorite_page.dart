@@ -5,16 +5,12 @@ import 'package:percon_app/feat/presentation/cubit/home/travel_cubit.dart';
 import 'package:percon_app/feat/presentation/cubit/home/travel_state.dart';
 import 'package:percon_app/feat/presentation/product/widgets/custom_app_bar.dart';
 import 'package:percon_app/feat/presentation/product/widgets/home/travel_card.dart';
+import 'package:easy_localization/easy_localization.dart';
 
-class FavoritePage extends StatefulWidget {
+class FavoritePage extends StatelessWidget {
   static const String id = AppTexts.favoritePageId;
   const FavoritePage({super.key});
 
-  @override
-  State<FavoritePage> createState() => _FavoritePageState();
-}
-
-class _FavoritePageState extends State<FavoritePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,14 +20,14 @@ class _FavoritePageState extends State<FavoritePage> {
           if (state is TravelLoading) {
             return const Center(child: CircularProgressIndicator.adaptive());
           } else if (state is TravelError) {
-            return const Center(child: Text(AppTexts.errorLoadingMsgDe));
+            return Center(child: Text(AppTexts.errorLoadingMsgDe.tr()));
           } else if (state is TravelLoaded) {
             // Filter favorites directly from the state
             final favoriteTravels = state.travels
                 .where((travel) => travel.isFavorite)
                 .toList();
             if (favoriteTravels.isEmpty) {
-              return const Center(child: Text(AppTexts.noFavoritesYetDe));
+              return Center(child: Text(AppTexts.noFavoritesYetDe.tr()));
             }
             return ListView.builder(
               itemCount: favoriteTravels.length,

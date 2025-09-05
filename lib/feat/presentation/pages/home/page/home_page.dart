@@ -3,13 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percon_app/core/config/theme/app_colors.dart';
 import 'package:percon_app/core/utils/const/app_texts.dart';
 import 'package:percon_app/core/utils/enum/view_mode_enum.dart';
+import 'package:percon_app/core/widgets/device_padding/device_padding.dart';
 import 'package:percon_app/core/widgets/device_spacing/device_spacing.dart';
 import 'package:percon_app/feat/presentation/cubit/home/travel_cubit.dart';
 import 'package:percon_app/feat/presentation/cubit/home/travel_state.dart';
+import 'package:percon_app/feat/presentation/cubit/locale/locale_cubit.dart';
 import 'package:percon_app/feat/presentation/pages/home/mixin/home_page_mixin.dart';
 import 'package:percon_app/feat/presentation/product/widgets/custom_app_bar.dart';
 import 'package:percon_app/feat/presentation/product/widgets/home/filter_section.dart';
 import 'package:percon_app/feat/presentation/product/widgets/home/travel_card.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class HomePage extends StatefulWidget {
   static const String id = AppTexts.homePageId;
@@ -22,45 +25,70 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with HomePageMixin {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<TravelCubit, TravelState>(
-      listener: (context, state) {
-        // Error durumunda BottomSheet göster
-        if (state is TravelError) {
-          _showErrorBottomSheet(context, state.message);
-        }
+    // Listen to locale changes and rebuild the entire page
+    return BlocConsumer<LocaleCubit, Locale>(
+      listener: (context, locale) {
+        // Rebuild the widget when locale changes
+        setState(() {});
       },
-      builder: (context, state) {
-        final travelCubit = context.read<TravelCubit>();
+      builder: (context, localeState) {
+        return BlocConsumer<TravelCubit, TravelState>(
+          listener: (context, state) {
+            // Error durumunda BottomSheet göster
+            if (state is TravelError) {
+              _showErrorBottomSheet(context, state.message);
+            }
+          },
+          builder: (context, state) {
+            final travelCubit = context.read<TravelCubit>();
 
-        return GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: Scaffold(
-            appBar: CustomAppBar.home(),
-            body: Column(
-              children: [
-                FilterSection(travelCubit: travelCubit),
-                Expanded(child: _buildTravelList(travelCubit, state)),
-              ],
-            ),
-          ),
+            return GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: Scaffold(
+                appBar: CustomAppBar.home(),
+                body: OrientationBuilder(
+                  builder: (context, orientation) {
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          FilterSection(travelCubit: travelCubit),
+                          _buildTravelList(travelCubit, state, orientation),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            );
+          },
         );
       },
     );
   }
 
-  Widget _buildTravelList(TravelCubit travelCubit, TravelState state) {
+  Widget _buildTravelList(
+    TravelCubit travelCubit,
+    TravelState state,
+    Orientation orientation,
+  ) {
     if (state is TravelLoading) {
       return const Center(child: CircularProgressIndicator());
     } else if (state is TravelLoaded) {
       if (state.travels.isEmpty) {
-        return const Center(child: Text(AppTexts.noTravelsFoundDe));
+        return Center(child: Text(AppTexts.noTravelsFoundDe.tr()));
       }
+
+      // Landscape modunda iki sütunlu bir liste göster
+      final crossAxisCount = orientation == Orientation.landscape ? 3 : 2;
+      final childAspectRatio = orientation == Orientation.landscape ? 0.7 : 0.8;
 
       return travelCubit.viewMode == ViewMode.grid
           ? GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.8,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount,
+                childAspectRatio: childAspectRatio,
               ),
               itemCount: state.travels.length,
               itemBuilder: (context, index) {
@@ -71,6 +99,8 @@ class _HomePageState extends State<HomePage> with HomePageMixin {
               },
             )
           : ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: state.travels.length,
               itemBuilder: (context, index) {
                 return TravelCard(
@@ -90,7 +120,7 @@ class _HomePageState extends State<HomePage> with HomePageMixin {
       builder: (context) {
         return Container(
           color: Colors.red,
-          padding: const EdgeInsets.all(16),
+          padding: DevicePadding.medium.all,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

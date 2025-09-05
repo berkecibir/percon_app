@@ -1,12 +1,15 @@
 class AppTexts {
   // Application texts here
   // App Name
-  static const String appName = 'Percon Travel App';
+  static const String appName = 'app_name';
 
   /// App Page Ids
   static const String loginPageId = 'login_page';
   static const String homePageId = 'home_page';
   static const String favoritePageId = 'favorite_page';
+  static const String profilePageId = 'profile_page';
+  static const String splashPageId = 'splash_page';
+
   // Json Path Here
   static const String jsonPath = 'assets/json/travels.json';
 
@@ -29,41 +32,75 @@ class AppTexts {
   static const String usersCollection = 'users';
 
   // Firebase Exception error messages
-  static const String firebaseExceptionMsg = 'Firebase Exception: ';
+  static const String firebaseExceptionMsg = 'firebase_exception_msg';
 
   // Button Texts
-  static const String googleSignInButton = 'Weiter mit Google';
+  static const String googleSignInButton = 'google_sign_in_button';
 
   // Login Page Texts
-  static const String welcomeText = 'Willkommen';
-  static const String logginInText = 'Anmelden...';
+  static const String welcomeText = 'welcome_text';
+  static const String logginInText = 'logging_in_text';
 
   // Home Page Texts
+  static const String categoryDe = 'category_de';
+  static const String cultureDe = 'culture_de';
+  static const String festivalDe = 'festival_de';
+  static const String adventureDe = 'adventure_de';
+  static const String countryDe = 'country_de';
+  static const String regionDe = 'region_de';
+  static const String startDateDe = 'start_date_de';
+  static const String endDateDe = 'end_date_de';
+  static const String searchDe = 'search_de';
+  static const String clearFiltersDe = 'clear_filters_de';
 
-  static const String categoryDe = 'Kategorie'; // Dropdown menu item
-  static const String cultureDe = 'Kultur'; // Dropdown menu item
-  static const String festivalDe = 'Festival'; // Dropdown menu item
-  static const String adventureDe = 'Abenteuer'; // Dropdown menu item
+  // Country names
+  static const String germany = 'germany';
+  static const String austria = 'austria';
+  static const String switzerland = 'switzerland';
 
-  static const String countryDe = 'Land'; // Country dropdown
-  static const String regionDe = 'Gebiet'; // Region dropdwon
+  // Region names for Germany
+  static const String berlin = 'berlin';
+  static const String hamburg = 'hamburg';
+  static const String bavaria = 'bavaria';
+  static const String saxony = 'saxony';
+  static const String hesse = 'hesse';
 
-  static const String startDateDe = 'Startdatum'; // Datepicer start date
-  static const String endDateDe = 'Enddatum'; // Datepicker end date
+  // Region names for Austria
+  static const String vienna = 'vienna';
+  static const String tyrol = 'tyrol';
+  static const String salzburg = 'salzburg';
+  static const String styria = 'styria';
+  static const String vorarlberg = 'vorarlberg';
 
-  static const String searchDe = 'Suchen...'; // Search field
+  // Region names for Switzerland
+  static const String zurich = 'zurich';
+  static const String geneva = 'geneva';
+  static const String bern = 'bern';
+  static const String lucerne = 'lucerne';
+  static const String valais = 'valais';
 
   // Favorite Page Text
-  static const String noFavoritesYetDe = 'Noch keine Favoriten';
-  static const String errorLoadingMsgDe =
-      'Beim Laden der Favoriten ist ein Fehler aufgetreten';
+  static const String noFavoritesYetDe = 'no_favorites_yet_de';
+  static const String errorLoadingMsgDe = 'error_loading_msg_de';
+
+  // Profile Page Texts
+  static const String userNotFoundDe = 'user_not_found_de';
+  static const String tryAgainDe = 'try_again_de';
+  static const String errorDe = 'error_de';
+  static const String nameSurnameDe = 'name_surname_de';
+  static const String emailDe = 'email_de';
+  static const String memberShipDe = 'membership_de';
+  static const String lastLoginDe = 'last_login_de';
+  static const String logOutDe = 'log_out_de';
+  static const String unknowdDe = 'unknown_de';
 
   // Appbar title
-  static const String homeAppbarTitle = 'Reise';
-  static const String favoriteAppBarTitle = 'Favoriten';
+  static const String homeAppbarTitle = 'home_appbar_title';
+  static const String favoriteAppBarTitle = 'favorite_appbar_title';
+  static const String profilePageAppBarTitle = 'profile_page_appbar_title';
 
-  static const String noTravelsFoundDe = 'Keine Reisen gefunden';
+  static const String noTravelsFoundDe = 'no_travels_found_de';
 
-  // Seach Field Hint Text
-  static const String hintTextSearch = 'Suchen';
+  // Search Field Hint Text
+  static const String hintTextSearch = 'hint_text_search';
 }

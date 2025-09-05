@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percon_app/core/duration/app_duration.dart';
+import 'package:percon_app/core/utils/const/app_texts.dart';
 import 'package:percon_app/core/utils/enum/view_mode_enum.dart';
 import 'package:percon_app/feat/data/model/travel/travel_model.dart';
 import 'package:percon_app/feat/data/repository/travel/i_travel_repository.dart';
@@ -22,6 +23,31 @@ class TravelCubit extends Cubit<TravelState> {
   DateTime? _currentEndDate;
   String? _currentSearchTerm;
   ViewMode _viewMode = ViewMode.list; // Use ViewMode from utils
+
+  // Mapping between localization keys and actual country/region names
+  final Map<String, String> _countryKeyToName = {
+    AppTexts.germany: 'Almanya',
+    AppTexts.austria: 'Avusturya',
+    AppTexts.switzerland: 'İsviçre',
+  };
+
+  final Map<String, String> _regionKeyToName = {
+    AppTexts.berlin: 'Berlin',
+    AppTexts.hamburg: 'Hamburg',
+    AppTexts.bavaria: 'Bayern',
+    AppTexts.saxony: 'Sachsen',
+    AppTexts.hesse: 'Hessen',
+    AppTexts.vienna: 'Wien',
+    AppTexts.tyrol: 'Tirol',
+    AppTexts.salzburg: 'Salzburg',
+    AppTexts.styria: 'Steiermark',
+    AppTexts.vorarlberg: 'Vorarlberg',
+    AppTexts.zurich: 'Zürich',
+    AppTexts.geneva: 'Genève',
+    AppTexts.bern: 'Bern',
+    AppTexts.lucerne: 'Luzern',
+    AppTexts.valais: 'Valais',
+  };
 
   TravelCubit({ITravelRepository? travelRepository})
     : _travelRepository = travelRepository ?? TravelRepository(),
@@ -76,38 +102,51 @@ class TravelCubit extends Cubit<TravelState> {
 
   void toggleFavorite(String travelId) async {
     try {
-      // Update in repository (which will update local cache)
+      // Repository'de toggle işlemini yap
       await _travelRepository.toggleFavorite(travelId);
 
-      final travelIndex = _allTravels.indexWhere((t) => t.id == travelId);
-      if (travelIndex != -1) {
-        // Create a new instance with updated favorite status
-        final updatedTravel = _allTravels[travelIndex].copyWith(
-          isFavorite: !_allTravels[travelIndex].isFavorite,
-        );
-        _allTravels[travelIndex] = updatedTravel;
+      // Repository'den güncel favorite durumunu al
+      final isNowFavorite = await _travelRepository.isFavorite(travelId);
 
-        // Also update in filtered list if present
-        final filteredIndex = _filteredTravels.indexWhere(
-          (t) => t.id == travelId,
-        );
-        if (filteredIndex != -1) {
-          _filteredTravels[filteredIndex] = updatedTravel;
-        }
+      // Lokal state'i güncelle
+      _updateTravelFavoriteStatus(travelId, isNowFavorite);
 
-        // Emit updated state with current viewMode
-        if (state is TravelLoaded) {
-          emit(
-            (state as TravelLoaded).copyWith(
-              travels: List.from(_filteredTravels),
-            ),
-          );
-        } else {
-          emit(TravelLoaded(List.from(_filteredTravels), viewMode: _viewMode));
-        }
-      }
+      // UI'ı güncelle
+      _emitUpdatedState();
     } catch (e) {
       emit(TravelError('Failed to toggle favorite: $e'));
+    }
+  }
+
+  // Belirli bir travel'ın favorite durumunu güncelle
+  void _updateTravelFavoriteStatus(String travelId, bool isFavorite) {
+    // _allTravels listesini güncelle
+    for (int i = 0; i < _allTravels.length; i++) {
+      if (_allTravels[i].id == travelId) {
+        _allTravels[i] = _allTravels[i].copyWith(isFavorite: isFavorite);
+        break;
+      }
+    }
+
+    // _filteredTravels listesini güncelle
+    for (int i = 0; i < _filteredTravels.length; i++) {
+      if (_filteredTravels[i].id == travelId) {
+        _filteredTravels[i] = _filteredTravels[i].copyWith(
+          isFavorite: isFavorite,
+        );
+        break;
+      }
+    }
+  }
+
+  // Güncellenmiş state'i emit et
+  void _emitUpdatedState() {
+    if (state is TravelLoaded) {
+      emit(
+        (state as TravelLoaded).copyWith(travels: List.from(_filteredTravels)),
+      );
+    } else {
+      emit(TravelLoaded(List.from(_filteredTravels), viewMode: _viewMode));
     }
   }
 
@@ -119,12 +158,22 @@ class TravelCubit extends Cubit<TravelState> {
   void _applyCurrentFilters() {
     List<TravelModel> filtered = List.from(_allTravels);
 
+    // Convert localized country name to actual country name for filtering
+    String? actualCountry;
     if (_currentCountry != null && _currentCountry!.isNotEmpty) {
-      filtered = filtered.where((t) => t.country == _currentCountry).toList();
+      actualCountry = _countryKeyToName[_currentCountry!];
+      if (actualCountry != null) {
+        filtered = filtered.where((t) => t.country == actualCountry).toList();
+      }
     }
 
+    // Convert localized region name to actual region name for filtering
+    String? actualRegion;
     if (_currentRegion != null && _currentRegion!.isNotEmpty) {
-      filtered = filtered.where((t) => t.region == _currentRegion).toList();
+      actualRegion = _regionKeyToName[_currentRegion!];
+      if (actualRegion != null) {
+        filtered = filtered.where((t) => t.region == actualRegion).toList();
+      }
     }
 
     if (_currentCategory != null && _currentCategory!.isNotEmpty) {
@@ -189,6 +238,49 @@ class TravelCubit extends Cubit<TravelState> {
     _currentPage = 1;
     _hasMoreData = true;
     _applyCurrentFilters();
+  }
+
+  //method => load favorites
+  Future<void> loadFavoriteTravels() async {
+    try {
+      // This will load favorites from cache into the service
+      final favoriteTravels = await _travelRepository.getFavoriteTravels();
+
+      // Update the isFavorite flag for all travels
+      for (int i = 0; i < _allTravels.length; i++) {
+        final isFavorite = favoriteTravels.any(
+          (fav) => fav.id == _allTravels[i].id,
+        );
+        if (_allTravels[i].isFavorite != isFavorite) {
+          _allTravels[i] = _allTravels[i].copyWith(isFavorite: isFavorite);
+        }
+      }
+
+      // Also update filtered travels
+      for (int i = 0; i < _filteredTravels.length; i++) {
+        final isFavorite = favoriteTravels.any(
+          (fav) => fav.id == _filteredTravels[i].id,
+        );
+        if (_filteredTravels[i].isFavorite != isFavorite) {
+          _filteredTravels[i] = _filteredTravels[i].copyWith(
+            isFavorite: isFavorite,
+          );
+        }
+      }
+
+      // Emit updated state
+      if (state is TravelLoaded) {
+        emit(
+          (state as TravelLoaded).copyWith(
+            travels: List.from(_filteredTravels),
+          ),
+        );
+      } else {
+        emit(TravelLoaded(List.from(_filteredTravels), viewMode: _viewMode));
+      }
+    } catch (e) {
+      emit(TravelError('Failed to load favorites: $e'));
+    }
   }
 
   // New methods for UI interactions
@@ -307,4 +399,15 @@ class TravelCubit extends Cubit<TravelState> {
   DateTime? get currentStartDate => _currentStartDate;
   DateTime? get currentEndDate => _currentEndDate;
   String? get currentSearchTerm => _currentSearchTerm;
+
+  // Getters for localized names
+  String? get currentLocalizedCountry {
+    if (_currentCountry == null) return null;
+    return _currentCountry;
+  }
+
+  String? get currentLocalizedRegion {
+    if (_currentRegion == null) return null;
+    return _currentRegion;
+  }
 }

@@ -24,6 +24,7 @@ enum DeviceSpacing {
   xlarge(AppSizes.xxLarge);
 
   final double value;
+
   const DeviceSpacing(this.value);
 
   ///  SizedBox for only width

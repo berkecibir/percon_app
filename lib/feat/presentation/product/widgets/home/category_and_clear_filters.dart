@@ -4,6 +4,7 @@ import 'package:percon_app/core/utils/const/app_texts.dart';
 import 'package:percon_app/core/widgets/device_spacing/device_spacing.dart';
 import 'package:percon_app/feat/presentation/cubit/home/travel_cubit.dart';
 import 'package:percon_app/feat/presentation/cubit/home/travel_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CategoryAndClearFilters extends StatelessWidget {
   final TravelCubit travelCubit;
@@ -19,28 +20,28 @@ class CategoryAndClearFilters extends StatelessWidget {
             Expanded(
               child: DropdownButtonFormField<String>(
                 value: travelCubit.currentCategory,
-                hint: const Text(AppTexts.categoryDe),
-                items: const [
+                hint: Text(AppTexts.categoryDe.tr()),
+                items: [
                   DropdownMenuItem(
-                    value: AppTexts.cultureDe,
-                    child: Text(AppTexts.cultureDe),
+                    value: AppTexts.cultureDe.tr(),
+                    child: Text(AppTexts.cultureDe.tr()),
                   ),
                   DropdownMenuItem(
-                    value: AppTexts.festivalDe,
-                    child: Text(AppTexts.festivalDe),
+                    value: AppTexts.festivalDe.tr(),
+                    child: Text(AppTexts.festivalDe.tr()),
                   ),
                   DropdownMenuItem(
-                    value: AppTexts.adventureDe,
-                    child: Text(AppTexts.adventureDe),
+                    value: AppTexts.adventureDe.tr(),
+                    child: Text(AppTexts.adventureDe.tr()),
                   ),
                 ],
                 onChanged: (value) => travelCubit.onCategoryChanged(value),
               ),
             ),
             DeviceSpacing.small.width,
-            IconButton(
-              icon: const Icon(Icons.clear_all),
+            ElevatedButton(
               onPressed: travelCubit.clearAllFilters,
+              child: Text(AppTexts.clearFiltersDe.tr()),
             ),
           ],
         );

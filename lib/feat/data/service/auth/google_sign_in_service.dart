@@ -111,7 +111,6 @@ class GoogleSignInService implements IGoogleSignInService {
       return null;
     }
   }
-  // ... existing code ...
 
   @override
   Future<void> signOut() async {
