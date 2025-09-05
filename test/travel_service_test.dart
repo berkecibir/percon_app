@@ -34,7 +34,9 @@ void main() {
       // Check that we get the favorite travel
       // Note: This will return an empty list because we don't have actual travel data in tests
       // But the important thing is that it doesn't crash
-      expect(favorites is List, true);
+      expect(favorites.length, 1);
+      expect(favorites[0].id, '1');
+      expect(favorites[0].isFavorite, true);
     });
   });
 }
