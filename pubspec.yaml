@@ -20,6 +20,7 @@ dependencies:
   firebase_auth: ^6.0.1 # Firebase authentication
   flutter_dotenv: ^6.0.0 # Environment
   shared_preferences: ^2.5.3 # Shared preferences for user preferences
+  flutter_svg: ^2.2.1 # SVG support
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -30,6 +31,6 @@ flutter:
 
   assets:
     - assets/images/
-    - assets/icon/
+    - assets/icon/google_icon.svg
     - assets/json/
     - assets/.env
