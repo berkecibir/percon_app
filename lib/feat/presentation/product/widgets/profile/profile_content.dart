@@ -62,19 +62,19 @@ class ProfileContent extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    context.setLocale(Locale('en'));
+                    context.setLocale(const Locale('en'));
                   },
                   child: Text('English'.tr()),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    context.setLocale(Locale('tr'));
+                    context.setLocale(const Locale('tr'));
                   },
                   child: Text('Türkçe'.tr()),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    context.setLocale(Locale('de'));
+                    context.setLocale(const Locale('de'));
                   },
                   child: Text('Deutsch'.tr()),
                 ),

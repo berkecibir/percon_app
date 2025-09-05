@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percon_app/core/duration/app_duration.dart';
+import 'package:percon_app/core/utils/const/app_texts.dart';
 import 'package:percon_app/core/utils/enum/view_mode_enum.dart';
 import 'package:percon_app/feat/data/model/travel/travel_model.dart';
 import 'package:percon_app/feat/data/repository/travel/i_travel_repository.dart';
 import 'package:percon_app/feat/data/repository/travel/travel_repository.dart';
 import 'package:percon_app/feat/presentation/cubit/home/travel_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class TravelCubit extends Cubit<TravelState> {
   final ITravelRepository _travelRepository;
@@ -22,6 +24,56 @@ class TravelCubit extends Cubit<TravelState> {
   DateTime? _currentEndDate;
   String? _currentSearchTerm;
   ViewMode _viewMode = ViewMode.list; // Use ViewMode from utils
+
+  // Mapping between localization keys and actual country/region names
+  final Map<String, String> _countryKeyToName = {
+    AppTexts.germany: 'Almanya',
+    AppTexts.austria: 'Avusturya',
+    AppTexts.switzerland: 'İsviçre',
+  };
+
+  final Map<String, String> _regionKeyToName = {
+    AppTexts.berlin: 'Berlin',
+    AppTexts.hamburg: 'Hamburg',
+    AppTexts.bavaria: 'Bayern',
+    AppTexts.saxony: 'Sachsen',
+    AppTexts.hesse: 'Hessen',
+    AppTexts.vienna: 'Wien',
+    AppTexts.tyrol: 'Tirol',
+    AppTexts.salzburg: 'Salzburg',
+    AppTexts.styria: 'Steiermark',
+    AppTexts.vorarlberg: 'Vorarlberg',
+    AppTexts.zurich: 'Zürich',
+    AppTexts.geneva: 'Genève',
+    AppTexts.bern: 'Bern',
+    AppTexts.lucerne: 'Luzern',
+    AppTexts.valais: 'Valais',
+  };
+
+  // Reverse mapping for displaying localized names
+  final Map<String, String> _countryNameToKey = {
+    'Almanya': AppTexts.germany,
+    'Avusturya': AppTexts.austria,
+    'İsviçre': AppTexts.switzerland,
+  };
+
+  final Map<String, String> _regionNameToKey = {
+    'Berlin': AppTexts.berlin,
+    'Hamburg': AppTexts.hamburg,
+    'Bayern': AppTexts.bavaria,
+    'Sachsen': AppTexts.saxony,
+    'Hessen': AppTexts.hesse,
+    'Wien': AppTexts.vienna,
+    'Tirol': AppTexts.tyrol,
+    'Salzburg': AppTexts.salzburg,
+    'Steiermark': AppTexts.styria,
+    'Vorarlberg': AppTexts.vorarlberg,
+    'Zürich': AppTexts.zurich,
+    'Genève': AppTexts.geneva,
+    'Bern': AppTexts.bern,
+    'Luzern': AppTexts.lucerne,
+    'Valais': AppTexts.valais,
+  };
 
   TravelCubit({ITravelRepository? travelRepository})
     : _travelRepository = travelRepository ?? TravelRepository(),
@@ -132,12 +184,22 @@ class TravelCubit extends Cubit<TravelState> {
   void _applyCurrentFilters() {
     List<TravelModel> filtered = List.from(_allTravels);
 
+    // Convert localized country name to actual country name for filtering
+    String? actualCountry;
     if (_currentCountry != null && _currentCountry!.isNotEmpty) {
-      filtered = filtered.where((t) => t.country == _currentCountry).toList();
+      actualCountry = _countryKeyToName[_currentCountry!];
+      if (actualCountry != null) {
+        filtered = filtered.where((t) => t.country == actualCountry).toList();
+      }
     }
 
+    // Convert localized region name to actual region name for filtering
+    String? actualRegion;
     if (_currentRegion != null && _currentRegion!.isNotEmpty) {
-      filtered = filtered.where((t) => t.region == _currentRegion).toList();
+      actualRegion = _regionKeyToName[_currentRegion!];
+      if (actualRegion != null) {
+        filtered = filtered.where((t) => t.region == actualRegion).toList();
+      }
     }
 
     if (_currentCategory != null && _currentCategory!.isNotEmpty) {
@@ -363,4 +425,15 @@ class TravelCubit extends Cubit<TravelState> {
   DateTime? get currentStartDate => _currentStartDate;
   DateTime? get currentEndDate => _currentEndDate;
   String? get currentSearchTerm => _currentSearchTerm;
+
+  // Getters for localized names
+  String? get currentLocalizedCountry {
+    if (_currentCountry == null) return null;
+    return _currentCountry;
+  }
+
+  String? get currentLocalizedRegion {
+    if (_currentRegion == null) return null;
+    return _currentRegion;
+  }
 }

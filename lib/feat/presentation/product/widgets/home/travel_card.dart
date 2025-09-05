@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:percon_app/core/sizes/app_sizes.dart';
+import 'package:percon_app/core/utils/const/app_texts.dart';
 import 'package:percon_app/core/widgets/device_padding/device_padding.dart';
 import 'package:percon_app/core/widgets/device_spacing/device_spacing.dart';
 import 'package:percon_app/feat/data/model/travel/travel_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class TravelCard extends StatefulWidget {
   final TravelModel travel;
@@ -20,6 +22,61 @@ class TravelCard extends StatefulWidget {
 
 class _TravelCardState extends State<TravelCard> {
   bool _isExpanded = false;
+
+  // Map country names to localization keys
+  String _getCountryLocalizationKey(String country) {
+    switch (country) {
+      case 'Almanya':
+        return AppTexts.germany;
+      case 'Avusturya':
+        return AppTexts.austria;
+      case 'İsviçre':
+        return AppTexts.switzerland;
+      default:
+        return country;
+    }
+  }
+
+  // Map region names to localization keys
+  String _getRegionLocalizationKey(String region) {
+    switch (region) {
+      // Germany regions
+      case 'Berlin':
+        return AppTexts.berlin;
+      case 'Hamburg':
+        return AppTexts.hamburg;
+      case 'Bayern':
+        return AppTexts.bavaria;
+      case 'Sachsen':
+        return AppTexts.saxony;
+      case 'Hessen':
+        return AppTexts.hesse;
+      // Austria regions
+      case 'Wien':
+        return AppTexts.vienna;
+      case 'Tirol':
+        return AppTexts.tyrol;
+      case 'Salzburg':
+        return AppTexts.salzburg;
+      case 'Steiermark':
+        return AppTexts.styria;
+      case 'Vorarlberg':
+        return AppTexts.vorarlberg;
+      // Switzerland regions
+      case 'Zürich':
+        return AppTexts.zurich;
+      case 'Genève':
+        return AppTexts.geneva;
+      case 'Bern':
+        return AppTexts.bern;
+      case 'Luzern':
+        return AppTexts.lucerne;
+      case 'Valais':
+        return AppTexts.valais;
+      default:
+        return region;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +125,7 @@ class _TravelCardState extends State<TravelCard> {
                       ),
                       DeviceSpacing.xsmall.height,
                       Text(
-                        '${widget.travel.country}, ${widget.travel.region}',
+                        '${_getCountryLocalizationKey(widget.travel.country).tr()}, ${_getRegionLocalizationKey(widget.travel.region).tr()}',
                         style: Theme.of(
                           context,
                         ).textTheme.bodyLarge?.copyWith(color: Colors.grey),

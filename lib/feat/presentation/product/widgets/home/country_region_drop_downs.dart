@@ -26,8 +26,11 @@ class CountryRegionDropDowns extends StatelessWidget {
               child: DropdownButtonFormField<String>(
                 value: travelCubit.currentCountry,
                 hint: Text(AppTexts.countryDe.tr()),
-                items: countryRegions.keys.map((String country) {
-                  return DropdownMenuItem(value: country, child: Text(country));
+                items: countryRegions.keys.map((String countryKey) {
+                  return DropdownMenuItem(
+                    value: countryKey,
+                    child: Text(countryKey.tr()),
+                  );
                 }).toList(),
                 onChanged: (value) =>
                     travelCubit.onCountryChanged(value, countryRegions),
@@ -40,11 +43,11 @@ class CountryRegionDropDowns extends StatelessWidget {
                 hint: Text(AppTexts.regionDe.tr()),
                 items: travelCubit.currentCountry != null
                     ? (countryRegions[travelCubit.currentCountry!] ?? []).map((
-                        String region,
+                        String regionKey,
                       ) {
                         return DropdownMenuItem(
-                          value: region,
-                          child: Text(region),
+                          value: regionKey,
+                          child: Text(regionKey.tr()),
                         );
                       }).toList()
                     : [],

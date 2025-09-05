@@ -24,6 +24,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with HomePageMixin {
   @override
   Widget build(BuildContext context) {
+    // Listen to locale changes and rebuild the entire page
     return BlocConsumer<TravelCubit, TravelState>(
       listener: (context, state) {
         // Error durumunda BottomSheet göster

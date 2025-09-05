@@ -23,10 +23,10 @@ Future<void> main() async {
   runApp(
     EasyLocalization(
       key: UniqueKey(), // Add key to force rebuild when locale changes
-      supportedLocales: [Locale('en'), Locale('tr'), Locale('de')],
+      supportedLocales: const [Locale('en'), Locale('tr'), Locale('de')],
       path: 'assets/translations',
-      fallbackLocale: Locale('de'),
-      startLocale: Locale('de'),
+      fallbackLocale: const Locale('de'),
+      startLocale: const Locale('de'),
       child: MainApp(),
     ),
   );
@@ -41,26 +41,30 @@ class MainApp extends StatelessWidget {
     AppInit.initDeviceSize(context);
     return MultiBlocProvider(
       providers: BlocProvidersSetUp.providers,
-      child: MaterialApp(
-        localizationsDelegates: context.localizationDelegates,
-        supportedLocales: context.supportedLocales,
-        locale: context.locale,
-        theme: MyAppTheme.lightTheme,
-        debugShowCheckedModeBanner: false,
-        title: AppTexts.appName.tr(),
-        navigatorKey: Navigation.navigationKey,
-        routes: AppRoutes.routes,
-        initialRoute: SplashPage.id,
-        builder: (context, child) {
-          return BlocListener<AuthCubit, AuthState>(
-            listener: (context, state) {
-              if (state is AuthUnauthenticated) {
-                Navigation.pushReplacementNamed(root: LoginPage.id);
-              } else if (state is AuthAuthenticated) {
-                Navigation.pushReplacementNamed(root: HomePage.id);
-              }
+      child: Builder(
+        builder: (context) {
+          return MaterialApp(
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            theme: MyAppTheme.lightTheme,
+            debugShowCheckedModeBanner: false,
+            title: AppTexts.appName.tr(),
+            navigatorKey: Navigation.navigationKey,
+            routes: AppRoutes.routes,
+            initialRoute: SplashPage.id,
+            builder: (context, child) {
+              return BlocListener<AuthCubit, AuthState>(
+                listener: (context, state) {
+                  if (state is AuthUnauthenticated) {
+                    Navigation.pushReplacementNamed(root: LoginPage.id);
+                  } else if (state is AuthAuthenticated) {
+                    Navigation.pushReplacementNamed(root: HomePage.id);
+                  }
+                },
+                child: child,
+              );
             },
-            child: child,
           );
         },
       ),

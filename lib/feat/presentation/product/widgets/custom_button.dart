@@ -4,6 +4,7 @@ import 'package:percon_app/core/border/app_border_radius.dart';
 import 'package:percon_app/core/config/asset/app_vectors.dart';
 import 'package:percon_app/core/sizes/app_sizes.dart';
 import 'package:percon_app/core/utils/const/app_texts.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CustomButton extends StatelessWidget {
   final IconData? iconData;
@@ -32,7 +33,7 @@ class CustomButton extends StatelessWidget {
           ),
           SizedBox(width: AppSizes.small),
           Text(
-            AppTexts.googleSignInButton,
+            AppTexts.googleSignInButton.tr(), // Add .tr() for localization
             style: TextStyle(
               fontSize: AppSizes.normal,
               fontWeight: FontWeight.w600,
