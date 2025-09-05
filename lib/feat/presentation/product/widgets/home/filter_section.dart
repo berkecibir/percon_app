@@ -14,6 +14,13 @@ class FilterSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Ülke-bölge eşleme tablosu
+    final Map<String, List<String>> countryRegions = {
+      'Almanya': ['Berlin', 'Hamburg', 'Bayern', 'Sachsen', 'Hessen'],
+      'Avusturya': ['Wien', 'Tirol', 'Salzburg', 'Steiermark', 'Vorarlberg'],
+      'İsviçre': ['Zürich', 'Genève', 'Bern', 'Luzern', 'Valais'],
+    };
+
     return Padding(
       padding: DevicePadding.small.all,
       child: OrientationBuilder(
@@ -25,7 +32,10 @@ class FilterSection extends StatelessWidget {
                 children: [
                   SearchField(travelCubit: travelCubit),
                   DeviceSpacing.small.height,
-                  CountryRegionDropdowns(travelCubit: travelCubit),
+                  CountryRegionDropDowns(
+                    travelCubit: travelCubit,
+                    countryRegions: countryRegions,
+                  ),
                   DeviceSpacing.small.height,
                   CategoryAndClearFilters(travelCubit: travelCubit),
                   DeviceSpacing.small.height,
@@ -39,7 +49,10 @@ class FilterSection extends StatelessWidget {
               children: [
                 SearchField(travelCubit: travelCubit),
                 DeviceSpacing.small.height,
-                CountryRegionDropdowns(travelCubit: travelCubit),
+                CountryRegionDropDowns(
+                  travelCubit: travelCubit,
+                  countryRegions: countryRegions,
+                ),
                 DeviceSpacing.small.height,
                 CategoryAndClearFilters(travelCubit: travelCubit),
                 DeviceSpacing.small.height,

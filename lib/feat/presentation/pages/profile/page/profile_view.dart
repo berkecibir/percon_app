@@ -5,6 +5,7 @@ import 'package:percon_app/feat/presentation/cubit/profile/profile_cubit.dart';
 import 'package:percon_app/feat/presentation/cubit/profile/profile_state.dart';
 import 'package:percon_app/feat/presentation/product/widgets/profile/profile_content.dart';
 import 'package:percon_app/feat/presentation/product/widgets/custom_app_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -29,7 +30,7 @@ class ProfileView extends StatelessWidget {
           if (state.user == null) {
             return Center(
               child: Text(
-                AppTexts.userNotFoundDe,
+                AppTexts.userNotFoundDe.tr(),
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             );

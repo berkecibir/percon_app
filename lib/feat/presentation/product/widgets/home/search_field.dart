@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percon_app/core/utils/const/app_texts.dart';
 import 'package:percon_app/feat/presentation/cubit/home/travel_cubit.dart';
 import 'package:percon_app/feat/presentation/cubit/home/travel_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class SearchField extends StatefulWidget {
   final TravelCubit travelCubit;
@@ -41,23 +42,13 @@ class _SearchFieldState extends State<SearchField> {
         return TextField(
           controller: _controller,
           decoration: InputDecoration(
-            hintText: AppTexts.searchDe,
+            hintText: AppTexts.searchDe.tr(),
             prefixIcon: const Icon(Icons.search),
             border: const OutlineInputBorder(),
-            suffixIcon: IconButton(
-              icon: const Icon(Icons.clear),
-              onPressed: widget.travelCubit.clearSearch,
-            ),
           ),
           onChanged: widget.travelCubit.onSearchChanged,
         );
       },
     );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 }

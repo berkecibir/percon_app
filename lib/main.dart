@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percon_app/core/config/theme/app_theme.dart';
@@ -15,9 +16,19 @@ import 'package:percon_app/feat/providers/bloc_providers_set_up.dart';
 
 Future<void> main() async {
   // Application Initialize
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   await AppInit.initializeApp();
   await CacheHelper.migrateFavoriteData();
-  runApp(const MainApp());
+  runApp(
+    EasyLocalization(
+      supportedLocales: [Locale('en'), Locale('tr'), Locale('de')],
+      path: 'assets/translations',
+      fallbackLocale: Locale('de'),
+      startLocale: Locale('de'),
+      child: MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -30,9 +41,12 @@ class MainApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: BlocProvidersSetUp.providers,
       child: MaterialApp(
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
         theme: MyAppTheme.lightTheme,
         debugShowCheckedModeBanner: false,
-        title: AppTexts.appName,
+        title: AppTexts.appName.tr(),
         navigatorKey: Navigation.navigationKey,
         routes: AppRoutes.routes,
         initialRoute: SplashPage.id,

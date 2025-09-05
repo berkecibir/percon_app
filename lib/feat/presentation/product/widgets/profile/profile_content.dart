@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percon_app/core/utils/const/app_texts.dart';
@@ -27,30 +28,58 @@ class ProfileContent extends StatelessWidget {
 
           // User Info Cards
           UserInfoCard(
-            title: AppTexts.nameSurnameDe,
+            title: AppTexts.nameSurnameDe.tr(),
             content: user.fullName,
             icon: Icons.person,
           ),
           DeviceSpacing.small.height,
 
           UserInfoCard(
-            title: AppTexts.emailDe,
+            title: AppTexts.emailDe.tr(),
             content: user.email,
             icon: Icons.email,
           ),
           DeviceSpacing.small.height,
 
           UserInfoCard(
-            title: AppTexts.memberShipDe,
+            title: AppTexts.memberShipDe.tr(),
             content: _formatDate(user.createdAt),
             icon: Icons.calendar_today,
           ),
           DeviceSpacing.small.height,
 
           UserInfoCard(
-            title: AppTexts.lastLoginDe,
+            title: AppTexts.lastLoginDe.tr(),
             content: _formatDate(user.lastLogin),
             icon: Icons.access_time,
+          ),
+          DeviceSpacing.small.height,
+
+          // Language Selection Buttons
+          Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    context.setLocale(Locale('en'));
+                  },
+                  child: Text('English'.tr()),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    context.setLocale(Locale('tr'));
+                  },
+                  child: Text('Türkçe'.tr()),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    context.setLocale(Locale('de'));
+                  },
+                  child: Text('Deutsch'.tr()),
+                ),
+              ],
+            ),
           ),
           DeviceSpacing.small.height,
 
@@ -60,7 +89,7 @@ class ProfileContent extends StatelessWidget {
                 context.read<AuthCubit>().signOut();
               },
               child: Text(
-                AppTexts.logOutDe,
+                AppTexts.logOutDe.tr(),
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
@@ -71,7 +100,7 @@ class ProfileContent extends StatelessWidget {
   }
 
   String _formatDate(DateTime? date) {
-    if (date == null) return AppTexts.unknowdDe;
+    if (date == null) return AppTexts.unknowdDe.tr();
     return '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percon_app/core/utils/const/app_texts.dart';
 import 'package:percon_app/core/widgets/device_spacing/device_spacing.dart';
 import 'package:percon_app/feat/presentation/cubit/profile/profile_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ErrorWidget extends StatelessWidget {
   final String error;
@@ -13,7 +14,7 @@ class ErrorWidget extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('${AppTexts.errorDe} : $error'),
+        Text('${AppTexts.errorDe.tr()} : $error'),
         DeviceSpacing.small.height,
         ElevatedButton(
           onPressed: () {
@@ -22,7 +23,7 @@ class ErrorWidget extends StatelessWidget {
               context.read<ProfileCubit>().loadUserProfile(userId);
             }
           },
-          child: Text(AppTexts.tryAgainDe),
+          child: Text(AppTexts.tryAgainDe.tr()),
         ),
       ],
     );

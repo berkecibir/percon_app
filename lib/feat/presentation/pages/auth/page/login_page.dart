@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:percon_app/core/sizes/app_sizes.dart';
 import 'package:percon_app/core/utils/const/app_texts.dart';
 import 'package:percon_app/core/widgets/device_padding/device_padding.dart';
-import 'package:percon_app/core/widgets/device_spacing/device_spacing.dart';
-import 'package:percon_app/core/widgets/navigation/navigation_helper.dart';
 import 'package:percon_app/feat/presentation/cubit/auth/auth_cubit.dart';
 import 'package:percon_app/feat/presentation/cubit/auth/auth_state.dart';
-import 'package:percon_app/feat/presentation/pages/auth/page/login_body_page.dart';
-import 'package:percon_app/feat/presentation/pages/home/page/home_page.dart';
+import 'package:percon_app/feat/presentation/product/widgets/custom_button.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class LoginPage extends StatelessWidget {
   static const String id = AppTexts.loginPageId;
@@ -17,51 +14,49 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocListener<AuthCubit, AuthState>(
-        listener: _buildListener,
-        child: const LoginBodyPage(),
+      body: BlocConsumer<AuthCubit, AuthState>(
+        listener: (context, state) {
+          if (state is AuthError) {
+            // Show error message
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
+          }
+        },
+        builder: (context, state) {
+          if (state is AuthLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          return Center(
+            child: Padding(
+              padding: DevicePadding.large.all,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // App Logo or Name
+                  Text(
+                    AppTexts.appName.tr(),
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    AppTexts.welcomeText.tr(),
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  const SizedBox(height: 40),
+                  // Google Sign In Button
+                  CustomButton.googleSignIn(
+                    onTap: () {
+                      context.read<AuthCubit>().signInWithGoogle();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
-    );
-  }
-
-  void _buildListener(BuildContext context, AuthState state) {
-    if (state is AuthAuthenticated) {
-      // Başarılı giriş sonrası HomePage'e yönlendir
-      Navigation.pushReplacementNamed(root: HomePage.id);
-    } else if (state is AuthError) {
-      // Hata durumunda BottomSheet göster
-      _showErrorBottomSheet(context, state.message);
-    }
-  }
-
-  void _showErrorBottomSheet(BuildContext context, String message) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Container(
-          color: Colors.red,
-          padding: DevicePadding.medium.all,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(
-                Icons.error_outline,
-                color: Colors.white,
-                size: AppSizes.xxLarge,
-              ),
-              DeviceSpacing.small.height,
-              Text(
-                message,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: AppSizes.normal,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

@@ -11,6 +11,7 @@ import 'package:percon_app/feat/presentation/pages/home/mixin/home_page_mixin.da
 import 'package:percon_app/feat/presentation/product/widgets/custom_app_bar.dart';
 import 'package:percon_app/feat/presentation/product/widgets/home/filter_section.dart';
 import 'package:percon_app/feat/presentation/product/widgets/home/travel_card.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class HomePage extends StatefulWidget {
   static const String id = AppTexts.homePageId;
@@ -64,7 +65,7 @@ class _HomePageState extends State<HomePage> with HomePageMixin {
       return const Center(child: CircularProgressIndicator());
     } else if (state is TravelLoaded) {
       if (state.travels.isEmpty) {
-        return const Center(child: Text(AppTexts.noTravelsFoundDe));
+        return Center(child: Text(AppTexts.noTravelsFoundDe.tr()));
       }
 
       // Landscape modunda iki sütunlu bir liste göster

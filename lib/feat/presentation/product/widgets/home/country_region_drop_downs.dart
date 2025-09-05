@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percon_app/core/utils/const/app_texts.dart';
 import 'package:percon_app/core/widgets/device_spacing/device_spacing.dart';
 import 'package:percon_app/feat/presentation/cubit/home/travel_cubit.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percon_app/feat/presentation/cubit/home/travel_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 
-class CountryRegionDropdowns extends StatelessWidget {
+class CountryRegionDropDowns extends StatelessWidget {
   final TravelCubit travelCubit;
+  final Map<String, List<String>> countryRegions;
 
-  const CountryRegionDropdowns({super.key, required this.travelCubit});
+  const CountryRegionDropDowns({
+    super.key,
+    required this.travelCubit,
+    required this.countryRegions,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // Ülke-bölge eşleme tablosu
-    final Map<String, List<String>> countryRegions = {
-      'Almanya': ['Berlin', 'Hamburg', 'Bayern', 'Sachsen', 'Hessen'],
-      'Avusturya': ['Wien', 'Tirol', 'Salzburg', 'Steiermark', 'Vorarlberg'],
-      'İsviçre': ['Zürich', 'Genève', 'Bern', 'Luzern', 'Valais'],
-    };
-
     return BlocBuilder<TravelCubit, TravelState>(
       builder: (context, state) {
         return Row(
@@ -26,7 +25,7 @@ class CountryRegionDropdowns extends StatelessWidget {
             Expanded(
               child: DropdownButtonFormField<String>(
                 value: travelCubit.currentCountry,
-                hint: const Text(AppTexts.countryDe),
+                hint: Text(AppTexts.countryDe.tr()),
                 items: countryRegions.keys.map((String country) {
                   return DropdownMenuItem(value: country, child: Text(country));
                 }).toList(),
@@ -38,7 +37,7 @@ class CountryRegionDropdowns extends StatelessWidget {
             Expanded(
               child: DropdownButtonFormField<String>(
                 value: travelCubit.currentRegion,
-                hint: const Text(AppTexts.regionDe),
+                hint: Text(AppTexts.regionDe.tr()),
                 items: travelCubit.currentCountry != null
                     ? (countryRegions[travelCubit.currentCountry!] ?? []).map((
                         String region,

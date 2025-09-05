@@ -4,6 +4,7 @@ import 'package:percon_app/core/utils/const/app_texts.dart';
 import 'package:percon_app/core/widgets/device_spacing/device_spacing.dart';
 import 'package:percon_app/feat/presentation/cubit/home/travel_cubit.dart';
 import 'package:percon_app/feat/presentation/cubit/home/travel_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class DatePickers extends StatelessWidget {
   final TravelCubit travelCubit;
@@ -21,7 +22,7 @@ class DatePickers extends StatelessWidget {
                 onPressed: () => travelCubit.selectStartDate(context),
                 child: Text(
                   travelCubit.currentStartDate == null
-                      ? AppTexts.startDateDe
+                      ? AppTexts.startDateDe.tr()
                       : '${travelCubit.currentStartDate!.day}/${travelCubit.currentStartDate!.month}/${travelCubit.currentStartDate!.year}',
                 ),
               ),
@@ -32,7 +33,7 @@ class DatePickers extends StatelessWidget {
                 onPressed: () => travelCubit.selectEndDate(context),
                 child: Text(
                   travelCubit.currentEndDate == null
-                      ? AppTexts.endDateDe
+                      ? AppTexts.endDateDe.tr()
                       : '${travelCubit.currentEndDate!.day}/${travelCubit.currentEndDate!.month}/${travelCubit.currentEndDate!.year}',
                 ),
               ),

@@ -5,6 +5,7 @@ import 'package:percon_app/core/utils/enum/view_mode_enum.dart';
 import 'package:percon_app/core/widgets/navigation/navigation_helper.dart';
 import 'package:percon_app/feat/presentation/cubit/home/travel_cubit.dart';
 import 'package:percon_app/feat/presentation/cubit/home/travel_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -15,7 +16,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   // Factory method for home
   factory CustomAppBar.home() {
     return CustomAppBar(
-      title: AppTexts.homeAppbarTitle,
+      title: AppTexts.homeAppbarTitle.tr(),
       actions: [
         IconButton(
           icon: const Icon(Icons.favorite),
@@ -47,11 +48,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   factory CustomAppBar.profile() {
-    return CustomAppBar(title: AppTexts.profilePageAppBarTitle);
+    return CustomAppBar(title: AppTexts.profilePageAppBarTitle.tr());
   }
 
   factory CustomAppBar.favorite() {
-    return CustomAppBar(title: AppTexts.favoriteAppBarTitle);
+    return CustomAppBar(title: AppTexts.favoriteAppBarTitle.tr());
   }
 
   @override
