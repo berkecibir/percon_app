@@ -76,38 +76,51 @@ class TravelCubit extends Cubit<TravelState> {
 
   void toggleFavorite(String travelId) async {
     try {
-      // Update in repository (which will update local cache)
+      // Repository'de toggle işlemini yap
       await _travelRepository.toggleFavorite(travelId);
 
-      final travelIndex = _allTravels.indexWhere((t) => t.id == travelId);
-      if (travelIndex != -1) {
-        // Create a new instance with updated favorite status
-        final updatedTravel = _allTravels[travelIndex].copyWith(
-          isFavorite: !_allTravels[travelIndex].isFavorite,
-        );
-        _allTravels[travelIndex] = updatedTravel;
+      // Repository'den güncel favorite durumunu al
+      final isNowFavorite = await _travelRepository.isFavorite(travelId);
 
-        // Also update in filtered list if present
-        final filteredIndex = _filteredTravels.indexWhere(
-          (t) => t.id == travelId,
-        );
-        if (filteredIndex != -1) {
-          _filteredTravels[filteredIndex] = updatedTravel;
-        }
+      // Lokal state'i güncelle
+      _updateTravelFavoriteStatus(travelId, isNowFavorite);
 
-        // Emit updated state with current viewMode
-        if (state is TravelLoaded) {
-          emit(
-            (state as TravelLoaded).copyWith(
-              travels: List.from(_filteredTravels),
-            ),
-          );
-        } else {
-          emit(TravelLoaded(List.from(_filteredTravels), viewMode: _viewMode));
-        }
-      }
+      // UI'ı güncelle
+      _emitUpdatedState();
     } catch (e) {
       emit(TravelError('Failed to toggle favorite: $e'));
+    }
+  }
+
+  // Belirli bir travel'ın favorite durumunu güncelle
+  void _updateTravelFavoriteStatus(String travelId, bool isFavorite) {
+    // _allTravels listesini güncelle
+    for (int i = 0; i < _allTravels.length; i++) {
+      if (_allTravels[i].id == travelId) {
+        _allTravels[i] = _allTravels[i].copyWith(isFavorite: isFavorite);
+        break;
+      }
+    }
+
+    // _filteredTravels listesini güncelle
+    for (int i = 0; i < _filteredTravels.length; i++) {
+      if (_filteredTravels[i].id == travelId) {
+        _filteredTravels[i] = _filteredTravels[i].copyWith(
+          isFavorite: isFavorite,
+        );
+        break;
+      }
+    }
+  }
+
+  // Güncellenmiş state'i emit et
+  void _emitUpdatedState() {
+    if (state is TravelLoaded) {
+      emit(
+        (state as TravelLoaded).copyWith(travels: List.from(_filteredTravels)),
+      );
+    } else {
+      emit(TravelLoaded(List.from(_filteredTravels), viewMode: _viewMode));
     }
   }
 
@@ -189,6 +202,49 @@ class TravelCubit extends Cubit<TravelState> {
     _currentPage = 1;
     _hasMoreData = true;
     _applyCurrentFilters();
+  }
+
+  //method => load favorites
+  Future<void> loadFavoriteTravels() async {
+    try {
+      // This will load favorites from cache into the service
+      final favoriteTravels = await _travelRepository.getFavoriteTravels();
+
+      // Update the isFavorite flag for all travels
+      for (int i = 0; i < _allTravels.length; i++) {
+        final isFavorite = favoriteTravels.any(
+          (fav) => fav.id == _allTravels[i].id,
+        );
+        if (_allTravels[i].isFavorite != isFavorite) {
+          _allTravels[i] = _allTravels[i].copyWith(isFavorite: isFavorite);
+        }
+      }
+
+      // Also update filtered travels
+      for (int i = 0; i < _filteredTravels.length; i++) {
+        final isFavorite = favoriteTravels.any(
+          (fav) => fav.id == _filteredTravels[i].id,
+        );
+        if (_filteredTravels[i].isFavorite != isFavorite) {
+          _filteredTravels[i] = _filteredTravels[i].copyWith(
+            isFavorite: isFavorite,
+          );
+        }
+      }
+
+      // Emit updated state
+      if (state is TravelLoaded) {
+        emit(
+          (state as TravelLoaded).copyWith(
+            travels: List.from(_filteredTravels),
+          ),
+        );
+      } else {
+        emit(TravelLoaded(List.from(_filteredTravels), viewMode: _viewMode));
+      }
+    } catch (e) {
+      emit(TravelError('Failed to load favorites: $e'));
+    }
   }
 
   // New methods for UI interactions

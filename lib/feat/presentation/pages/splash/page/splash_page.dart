@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:percon_app/core/config/asset/app_images.dart';
-import 'package:percon_app/core/duration/app_duration.dart';
 import 'package:percon_app/core/utils/const/app_texts.dart';
-import 'package:percon_app/core/widgets/navigation/navigation_helper.dart';
-import 'package:percon_app/feat/presentation/pages/auth/page/login_page.dart';
+import 'package:percon_app/feat/presentation/pages/splash/mixin/splash_page_mixin.dart';
 
 class SplashPage extends StatefulWidget {
   static const String id = AppTexts.splashPageId;
@@ -13,14 +11,7 @@ class SplashPage extends StatefulWidget {
   State<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
-  Duration splashDurationValue() => AppDuration.twoSecond;
-
-  Future<void> redirect() async {
-    await Future.delayed(splashDurationValue());
-    Navigation.pushReplace(page: const LoginPage());
-  }
-
+class _SplashPageState extends State<SplashPage> with SplashPageMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -16,6 +16,15 @@ class FavoritePage extends StatefulWidget {
 
 class _FavoritePageState extends State<FavoritePage> {
   @override
+  void initState() {
+    super.initState();
+    // Load favorites when the page is opened
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<TravelCubit>().loadFavoriteTravels();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar.favorite(),

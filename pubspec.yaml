@@ -19,6 +19,7 @@ dependencies:
   firebase_core: ^4.0.0 # Firebase core
   firebase_auth: ^6.0.1 # Firebase authentication
   flutter_dotenv: ^6.0.0 # Environment
+  shared_preferences: ^2.5.3 # Shared preferences for user preferences
 dev_dependencies:
   flutter_test:
     sdk: flutter

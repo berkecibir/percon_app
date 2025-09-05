@@ -30,4 +30,9 @@ class TravelRepository implements ITravelRepository {
   Future<int> getTotalCount() async {
     return await _travelService.getTotalCount();
   }
+
+  @override
+  Future<bool> isFavorite(String travelId) async {
+    return await _travelService.isFavorite(travelId);
+  }
 }

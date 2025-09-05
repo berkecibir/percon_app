@@ -8,4 +8,5 @@ abstract class ITravelService {
   Future<int> getTotalCount();
   Future<void> toggleFavorite(String travelId);
   Future<List<TravelModel>> getFavoriteTravels();
+  Future<bool> isFavorite(String travelId); // Add this missing method
 }

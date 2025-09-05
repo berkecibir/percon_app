@@ -5,4 +5,5 @@ abstract class ITravelRepository {
   Future<int> getTotalCount();
   Future<void> toggleFavorite(String travelId);
   Future<List<TravelModel>> getFavoriteTravels();
+  Future<bool> isFavorite(String travelId);
 }

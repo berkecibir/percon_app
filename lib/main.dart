@@ -4,6 +4,7 @@ import 'package:percon_app/core/config/theme/app_theme.dart';
 import 'package:percon_app/core/init/app_init.dart';
 import 'package:percon_app/core/routes/app_routes.dart';
 import 'package:percon_app/core/utils/const/app_texts.dart';
+import 'package:percon_app/core/utils/helper/cache_helper.dart';
 import 'package:percon_app/core/widgets/navigation/navigation_helper.dart';
 import 'package:percon_app/feat/presentation/cubit/auth/auth_cubit.dart';
 import 'package:percon_app/feat/presentation/cubit/auth/auth_state.dart';
@@ -15,6 +16,7 @@ import 'package:percon_app/feat/providers/bloc_providers_set_up.dart';
 Future<void> main() async {
   // Application Initialize
   await AppInit.initializeApp();
+  await CacheHelper.migrateFavoriteData();
   runApp(const MainApp());
 }
 
