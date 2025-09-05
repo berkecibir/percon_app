@@ -15,7 +15,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        final userRepository = context.read<UserRepositiory>();
+        final userRepository = context.read<IUserRepositiory>();
         final profileCubit = ProfileCubit(userRepository: userRepository);
 
         // Get current user ID from AuthCubit

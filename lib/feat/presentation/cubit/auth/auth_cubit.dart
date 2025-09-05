@@ -7,11 +7,11 @@ import 'package:percon_app/feat/data/repository/auth/i_user_repositiory.dart';
 import 'package:percon_app/feat/presentation/cubit/auth/auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final UserRepositiory _userRepository;
+  final IUserRepositiory _userRepository;
   final auth.FirebaseAuth _firebaseAuth;
 
   AuthCubit({
-    required UserRepositiory userRepository,
+    required IUserRepositiory userRepository,
     auth.FirebaseAuth? firebaseAuth,
   }) : _userRepository = userRepository,
        _firebaseAuth = firebaseAuth ?? auth.FirebaseAuth.instance,

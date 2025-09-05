@@ -12,7 +12,7 @@ import 'package:provider/single_child_widget.dart';
 
 class BlocProvidersSetUp {
   static List<SingleChildWidget> providers = [
-    RepositoryProvider<UserRepositiory>(
+    RepositoryProvider<IUserRepositiory>(
       create: (context) => UserRepository(
         googleSignInService: GoogleSignInService(),
         firestore: FirebaseFirestore.instance,
@@ -33,7 +33,7 @@ class BlocProvidersSetUp {
     ),
     BlocProvider<ProfileCubit>(
       create: (context) =>
-          ProfileCubit(userRepository: context.read<UserRepositiory>()),
+          ProfileCubit(userRepository: context.read<IUserRepositiory>()),
     ),
   ];
 }

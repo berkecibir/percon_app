@@ -3,9 +3,9 @@ import 'package:percon_app/feat/data/repository/auth/i_user_repositiory.dart';
 import 'package:percon_app/feat/presentation/cubit/profile/profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
-  final UserRepositiory _userRepository;
+  final IUserRepositiory _userRepository;
 
-  ProfileCubit({required UserRepositiory userRepository})
+  ProfileCubit({required IUserRepositiory userRepository})
     : _userRepository = userRepository,
       super(ProfileState.initial());
 
