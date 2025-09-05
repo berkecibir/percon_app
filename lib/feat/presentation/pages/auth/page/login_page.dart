@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percon_app/core/utils/const/app_texts.dart';
 import 'package:percon_app/core/widgets/device_padding/device_padding.dart';
+import 'package:percon_app/core/widgets/device_spacing/device_spacing.dart';
 import 'package:percon_app/feat/presentation/cubit/auth/auth_cubit.dart';
 import 'package:percon_app/feat/presentation/cubit/auth/auth_state.dart';
 import 'package:percon_app/feat/presentation/product/widgets/custom_button.dart';
@@ -39,12 +40,12 @@ class LoginPage extends StatelessWidget {
                     AppTexts.appName.tr(),
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
-                  const SizedBox(height: 20),
+                  DeviceSpacing.xlarge.height,
                   Text(
                     AppTexts.welcomeText.tr(),
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
-                  const SizedBox(height: 40),
+                  DeviceSpacing.xlarge.height,
                   // Google Sign In Button
                   CustomButton.googleSignIn(
                     onTap: () {

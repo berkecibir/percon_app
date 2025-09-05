@@ -7,6 +7,7 @@ import 'package:percon_app/core/widgets/device_padding/device_padding.dart';
 import 'package:percon_app/core/widgets/device_spacing/device_spacing.dart';
 import 'package:percon_app/feat/presentation/cubit/home/travel_cubit.dart';
 import 'package:percon_app/feat/presentation/cubit/home/travel_state.dart';
+import 'package:percon_app/feat/presentation/cubit/locale/locale_cubit.dart';
 import 'package:percon_app/feat/presentation/pages/home/mixin/home_page_mixin.dart';
 import 'package:percon_app/feat/presentation/product/widgets/custom_app_bar.dart';
 import 'package:percon_app/feat/presentation/product/widgets/home/filter_section.dart';
@@ -25,33 +26,41 @@ class _HomePageState extends State<HomePage> with HomePageMixin {
   @override
   Widget build(BuildContext context) {
     // Listen to locale changes and rebuild the entire page
-    return BlocConsumer<TravelCubit, TravelState>(
-      listener: (context, state) {
-        // Error durumunda BottomSheet göster
-        if (state is TravelError) {
-          _showErrorBottomSheet(context, state.message);
-        }
+    return BlocConsumer<LocaleCubit, Locale>(
+      listener: (context, locale) {
+        // Rebuild the widget when locale changes
+        setState(() {});
       },
-      builder: (context, state) {
-        final travelCubit = context.read<TravelCubit>();
+      builder: (context, localeState) {
+        return BlocConsumer<TravelCubit, TravelState>(
+          listener: (context, state) {
+            // Error durumunda BottomSheet göster
+            if (state is TravelError) {
+              _showErrorBottomSheet(context, state.message);
+            }
+          },
+          builder: (context, state) {
+            final travelCubit = context.read<TravelCubit>();
 
-        return GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: Scaffold(
-            appBar: CustomAppBar.home(),
-            body: OrientationBuilder(
-              builder: (context, orientation) {
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      FilterSection(travelCubit: travelCubit),
-                      _buildTravelList(travelCubit, state, orientation),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
+            return GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: Scaffold(
+                appBar: CustomAppBar.home(),
+                body: OrientationBuilder(
+                  builder: (context, orientation) {
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          FilterSection(travelCubit: travelCubit),
+                          _buildTravelList(travelCubit, state, orientation),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            );
+          },
         );
       },
     );

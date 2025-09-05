@@ -16,8 +16,6 @@ import 'package:percon_app/feat/providers/bloc_providers_set_up.dart';
 
 Future<void> main() async {
   // Application Initialize
-  WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
   await AppInit.initializeApp();
   await CacheHelper.migrateFavoriteData();
   runApp(
@@ -32,8 +30,21 @@ Future<void> main() async {
   );
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  late final GlobalKey<NavigatorState> _navigatorKey;
+
+  @override
+  void initState() {
+    super.initState();
+    _navigatorKey = Navigation.navigationKey;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +61,7 @@ class MainApp extends StatelessWidget {
             theme: MyAppTheme.lightTheme,
             debugShowCheckedModeBanner: false,
             title: AppTexts.appName.tr(),
-            navigatorKey: Navigation.navigationKey,
+            navigatorKey: _navigatorKey,
             routes: AppRoutes.routes,
             initialRoute: SplashPage.id,
             builder: (context, child) {

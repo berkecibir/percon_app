@@ -7,7 +7,6 @@ import 'package:percon_app/feat/presentation/product/widgets/home/category_and_c
 import 'package:percon_app/feat/presentation/product/widgets/home/country_region_drop_downs.dart';
 import 'package:percon_app/feat/presentation/product/widgets/home/date_pickers.dart';
 import 'package:percon_app/feat/presentation/product/widgets/home/search_field.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class FilterSection extends StatelessWidget {
   final TravelCubit travelCubit;

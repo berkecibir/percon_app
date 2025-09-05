@@ -22,7 +22,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return const CustomAppBar._(type: AppBarType.home);
   }
 
-  const CustomAppBar._({super.key, this.type}) : title = '', actions = const [];
+  const CustomAppBar._({this.type}) : title = '', actions = const [];
 
   // Factory method for profile
   factory CustomAppBar.profile() {

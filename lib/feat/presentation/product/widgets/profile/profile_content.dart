@@ -6,6 +6,7 @@ import 'package:percon_app/core/widgets/device_padding/device_padding.dart';
 import 'package:percon_app/core/widgets/device_spacing/device_spacing.dart';
 import 'package:percon_app/feat/data/model/auth/user_model.dart';
 import 'package:percon_app/feat/presentation/cubit/auth/auth_cubit.dart';
+import 'package:percon_app/feat/presentation/cubit/locale/locale_cubit.dart';
 import 'package:percon_app/feat/presentation/product/widgets/custom_button.dart';
 import 'package:percon_app/feat/presentation/product/widgets/profile/profile_header.dart';
 import 'package:percon_app/feat/presentation/product/widgets/profile/user_info_card.dart';
@@ -63,18 +64,21 @@ class ProfileContent extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     context.setLocale(const Locale('en'));
+                    context.read<LocaleCubit>().setLocale(const Locale('en'));
                   },
                   child: Text('English'.tr()),
                 ),
                 ElevatedButton(
                   onPressed: () {
                     context.setLocale(const Locale('tr'));
+                    context.read<LocaleCubit>().setLocale(const Locale('tr'));
                   },
                   child: Text('Türkçe'.tr()),
                 ),
                 ElevatedButton(
                   onPressed: () {
                     context.setLocale(const Locale('de'));
+                    context.read<LocaleCubit>().setLocale(const Locale('de'));
                   },
                   child: Text('Deutsch'.tr()),
                 ),

@@ -7,7 +7,6 @@ import 'package:percon_app/feat/data/model/travel/travel_model.dart';
 import 'package:percon_app/feat/data/repository/travel/i_travel_repository.dart';
 import 'package:percon_app/feat/data/repository/travel/travel_repository.dart';
 import 'package:percon_app/feat/presentation/cubit/home/travel_state.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class TravelCubit extends Cubit<TravelState> {
   final ITravelRepository _travelRepository;
@@ -48,31 +47,6 @@ class TravelCubit extends Cubit<TravelState> {
     AppTexts.bern: 'Bern',
     AppTexts.lucerne: 'Luzern',
     AppTexts.valais: 'Valais',
-  };
-
-  // Reverse mapping for displaying localized names
-  final Map<String, String> _countryNameToKey = {
-    'Almanya': AppTexts.germany,
-    'Avusturya': AppTexts.austria,
-    'İsviçre': AppTexts.switzerland,
-  };
-
-  final Map<String, String> _regionNameToKey = {
-    'Berlin': AppTexts.berlin,
-    'Hamburg': AppTexts.hamburg,
-    'Bayern': AppTexts.bavaria,
-    'Sachsen': AppTexts.saxony,
-    'Hessen': AppTexts.hesse,
-    'Wien': AppTexts.vienna,
-    'Tirol': AppTexts.tyrol,
-    'Salzburg': AppTexts.salzburg,
-    'Steiermark': AppTexts.styria,
-    'Vorarlberg': AppTexts.vorarlberg,
-    'Zürich': AppTexts.zurich,
-    'Genève': AppTexts.geneva,
-    'Bern': AppTexts.bern,
-    'Luzern': AppTexts.lucerne,
-    'Valais': AppTexts.valais,
   };
 
   TravelCubit({ITravelRepository? travelRepository})
