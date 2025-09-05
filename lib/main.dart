@@ -22,6 +22,7 @@ Future<void> main() async {
   await CacheHelper.migrateFavoriteData();
   runApp(
     EasyLocalization(
+      key: UniqueKey(), // Add key to force rebuild when locale changes
       supportedLocales: [Locale('en'), Locale('tr'), Locale('de')],
       path: 'assets/translations',
       fallbackLocale: Locale('de'),
