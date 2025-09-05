@@ -7,9 +7,23 @@ import 'package:percon_app/feat/presentation/product/widgets/custom_app_bar.dart
 import 'package:percon_app/feat/presentation/product/widgets/home/travel_card.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class FavoritePage extends StatelessWidget {
+class FavoritePage extends StatefulWidget {
   static const String id = AppTexts.favoritePageId;
   const FavoritePage({super.key});
+
+  @override
+  State<FavoritePage> createState() => _FavoritePageState();
+}
+
+class _FavoritePageState extends State<FavoritePage> {
+  @override
+  void initState() {
+    super.initState();
+    // Load favorites when the page is opened
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<TravelCubit>().loadFavoriteTravels();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
